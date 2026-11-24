@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en-GB">
 <head>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data: https://azure.assets.harvey.ai; connect-src 'none'; webrtc 'block'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none';" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; connect-src 'none'; webrtc 'block'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none';" />
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>How fucked am I</title>
@@ -175,7 +175,7 @@ footer{padding:56px 0 40px;color:var(--soft);font-size:12.5px}
           <div class="row"><label for="role">Role in tax technology and transformation</label><span class="val" id="roleval"></span></div>
           <input type="range" id="role" min="0" max="5" step="1" value="1">
           <div class="steps" id="rolesteps"></div>
-          <div class="note">Each grade loads a typical PwC tax technology and transformation week, and the sliders below move with it. Juniors build and document; seniors scope, run delivery and advise. Higher grades spend more time on advice, projects and implementation. Nobody benchmarks those yet, so the score falls. That is a gap in the evidence, not a safe harbour.</div>
+          <div class="note">Each grade loads a typical tax technology and transformation week, and the sliders below move with it. Juniors build and document; seniors scope, run delivery and advise. Higher grades spend more time on advice, projects and implementation. Nobody benchmarks those yet, so the score falls. That is a gap in the evidence, not a safe harbour.</div>
         </div>
         <p class="sub" style="margin-top:26px">Your week</p>
         <div id="mix"></div>
@@ -285,7 +285,7 @@ const BUCKETS=[
  {id:'implementation',name:'Advising on implementation',short:'Rollout'},
  {id:'compliance',name:'Compliance and calculations',short:'Compliance'},
  {id:'tools',name:'Building tools and automation',short:'Tools'}];
-/* Presets: a tax technology and transformation team at PwC. Order: advice, research, projects, deliverables, implementation, compliance, tools. Estimates, not timesheet data. */
+/* Presets: a tax technology and transformation team. Order: advice, research, projects, deliverables, implementation, compliance, tools. Estimates, not timesheet data. */
 const ROLES=[['Associate',[5,10,10,30,10,10,25]],['Senior associate',[10,10,15,25,15,5,20]],['Manager',[15,5,25,20,25,0,10]],['Senior manager',[25,5,25,15,25,0,5]],['Director',[35,5,20,10,25,0,5]],['Partner',[50,0,15,5,25,0,5]]];
 const BENCH={
  tax_agent:{how:`Agents get research tools and work through a private set of 193 research-grade US corporate tax questions. Answers are graded for accuracy against expert solutions. The top three are tightly bunched: 54.89%, 52.30% and 51.78%.`,why:`The closest match to tax technical research: open-ended questions, real research, no multiple choice.`,lim:`US federal corporate tax only. The questions are private, so you can't inspect them.`,n:'Vals Tax Agent Bench',w:'Agents on research-grade US corporate tax questions.',s:54.89,lead:'Gemini 4 Neon',d:'19 Nov 2026',u:'https://www.vals.ai/benchmarks/tax_agent_bench',feeds:'research',on:true},
