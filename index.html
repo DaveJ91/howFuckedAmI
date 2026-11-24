@@ -193,7 +193,7 @@ footer{padding:56px 0 40px;color:var(--soft);font-size:12.5px}
           <div class="note" id="pacenote"></div>
         </div>
         <div class="ctl" style="margin-top:26px">
-          <label class="switch"><input type="checkbox" id="alt"><span class="t"></span><span>Treat unmeasured work as exposed as deliverables. The honest pessimist's setting.</span></label>
+          <label class="switch"><input type="checkbox" id="alt" checked><span class="t"></span><span>Treat unmeasured work as exposed as deliverables. The honest pessimist's setting.</span></label>
         </div>
         <div class="ctl" style="margin-top:30px">
           <p class="sub">Today, for comparison</p>
@@ -312,7 +312,7 @@ const SOURCES=[['Vals AI, Tax Agent Bench','https://www.vals.ai/benchmarks/tax_a
 
 const $=s=>document.querySelector(s);
 const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const st={role:1,w:ROLES[1][1].slice(),hz:0,pace:1,alt:false};
+const st={role:1,w:ROLES[1][1].slice(),hz:0,pace:1,alt:true};
 const f1=v=>v.toFixed(1);
 
 function bucketScore(id){const ks=Object.keys(BENCH).filter(k=>BENCH[k].feeds===id&&BENCH[k].on);return ks.length?ks.reduce((a,k)=>a+BENCH[k].s,0)/ks.length:null;}
