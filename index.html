@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data: https://azure.assets.harvey.ai; connect-src 'none'; webrtc 'block'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none';" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How fucked am I</title>
+<style>
+:root{
+  --paper:#F6F3EE; --card:#FFFFFF; --ink:#16213F; --soft:#5B6482; --line:#E3DED5;
+  --blue:#3453F5; --blue-2:#6F86FF; --blue-3:#C9D3FF; --blue-4:#E6EBFF;
+  --pink:#FF5D98; --pink-2:#FF8DB7; --pink-3:#FFD0E1; --pink-4:#FFEDF3;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:"Avenir Next","Segoe UI",-apple-system,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 var(--sans);-webkit-font-smoothing:antialiased}
+a{color:var(--blue);text-underline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+header.top{display:flex;justify-content:space-between;align-items:baseline;padding:28px 0 0}
+.mark{font:600 17px var(--serif);letter-spacing:-.01em}
+.mark i{font-style:normal;color:var(--pink)}
+.meta{color:var(--soft);font-size:13px}
+
+/* hero */
+.hero{display:grid;grid-template-columns:1fr 1.05fr;gap:40px;align-items:center;padding:56px 0 24px}
+h1{font:400 clamp(40px,5.4vw,68px)/1.02 var(--serif);letter-spacing:-.025em;margin:0 0 18px}
+h1 em{font-style:italic;color:var(--blue)}
+.score{display:flex;align-items:flex-end;gap:14px;margin:8px 0 6px}
+.num{font:400 clamp(96px,13vw,168px)/.85 var(--serif);letter-spacing:-.05em;color:var(--pink);font-variant-numeric:tabular-nums}
+.of{font:400 22px var(--serif);color:var(--soft);padding-bottom:14px}
+.verdict{font:600 19px/1.35 var(--sans);margin:18px 0 8px;max-width:30ch;min-height:2.7em}
+.lede{color:var(--soft);max-width:44ch;margin:0}
+.scale{position:relative;margin:26px 0 0;max-width:420px}
+.scale .bar{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;height:6px}
+.scale .bar span{background:var(--blue-4);border-radius:3px;transition:background .4s}
+.scale .bar span.on{background:var(--pink-3)}
+.scale .pin{position:absolute;top:-5px;width:16px;height:16px;border-radius:50%;background:var(--pink);border:3px solid var(--paper);transform:translateX(-50%);box-shadow:0 0 0 1px var(--pink)}
+.scale .ticks{display:flex;justify-content:space-between;color:var(--soft);font-size:11px;margin-top:8px}
+.scene{position:relative}
+.scene svg{width:100%;height:auto;display:block;overflow:visible}
+.legend{display:flex;gap:18px;justify-content:center;color:var(--soft);font-size:12.5px;margin-top:8px;flex-wrap:wrap}
+.legend b{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+
+/* panels */
+section{padding:56px 0 0}
+.sec-h{display:grid;grid-template-columns:200px 1fr;gap:40px;border-top:1px solid var(--line);padding-top:22px}
+.sec-h h2{font:400 26px/1.15 var(--serif);margin:0;letter-spacing:-.01em}
+.sec-h p.k{color:var(--soft);margin:6px 0 0;font-size:13.5px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:28px 48px}
+.ctl{margin-bottom:18px}
+.ctl .row{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.ctl label{font-weight:600;font-size:14px}
+.ctl .val{font:400 15px var(--serif);color:var(--blue);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ctl .note{color:var(--soft);font-size:12.5px;line-height:1.45;margin-top:4px;min-height:1.45em;transition:color .3s}
+.ctl .note.up{color:#B4235E}
+.ctl .note.down{color:#2B44C8}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:22px;background:transparent;margin:4px 0 0;cursor:pointer;--p:50%}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;background:linear-gradient(to right,var(--pink) var(--p),var(--line) var(--p))}
+input[type=range]::-moz-range-track{height:4px;border-radius:2px;background:var(--line)}
+input[type=range]::-moz-range-progress{height:4px;border-radius:2px;background:var(--pink)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--card);border:2px solid var(--ink);margin-top:-7px;transition:transform .2s}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--card);border:2px solid var(--ink)}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.2)}
+input[type=range]:focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:4px}
+.steps{display:flex;justify-content:space-between;color:var(--soft);font-size:11.5px;margin-top:2px}
+.steps span{cursor:pointer}
+.steps span.on{color:var(--ink);font-weight:600}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--card);margin-top:6px}
+.seg button{all:unset;cursor:pointer;padding:6px 14px;border-radius:999px;font-size:13px;color:var(--soft);transition:background .25s,color .25s}
+.seg button[aria-pressed=true]{background:var(--ink);color:#fff}
+.seg button:focus-visible{outline:2px solid var(--blue)}
+.switch{display:flex;gap:12px;align-items:flex-start;cursor:pointer;font-size:13.5px;color:var(--soft)}
+.switch input{position:absolute;opacity:0;pointer-events:none}
+.switch .t{flex:none;width:34px;height:20px;border-radius:10px;background:var(--line);position:relative;transition:background .25s;margin-top:1px}
+.switch .t:after{content:"";position:absolute;left:3px;top:3px;width:14px;height:14px;border-radius:50%;background:#fff;transition:transform .3s cubic-bezier(.3,1.6,.5,1)}
+.switch input:checked+.t{background:var(--blue)}
+.switch input:checked+.t:after{transform:translateX(14px)}
+.switch input:focus-visible+.t{outline:2px solid var(--blue);outline-offset:2px}
+.sub{font:600 12.5px var(--sans);color:var(--soft);margin:0 0 10px}
+
+/* benchmarks */
+.bench{border-collapse:collapse;width:100%;font-size:14px}
+.bench td{padding:14px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.bench tr:first-child td{border-top:1px solid var(--line)}
+.bench .nm{font-weight:600}
+.bench .what{color:var(--soft);font-size:12.5px;margin-top:2px;max-width:46ch}
+.bench .sc{font:400 22px var(--serif);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.bench .ld{color:var(--soft);font-size:12.5px;white-space:nowrap}
+.bench tr.off .sc,.bench tr.off .nm{color:var(--soft)}
+.bench tr.ctx .sc{color:var(--soft)}
+.bench .feeds{font-size:12px;color:var(--soft)}
+
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:18px 48px;margin:0;padding:0;list-style:none}
+.notes li{font-size:14px;color:var(--soft)}
+.notes b{display:block;color:var(--ink);font-weight:600;margin-bottom:2px}
+.src{columns:2;column-gap:48px;font-size:13px;padding:0;margin:0;list-style:none}
+.src li{break-inside:avoid;margin-bottom:6px}
+footer{padding:56px 0 40px;color:var(--soft);font-size:12.5px}
+
+
+.fix{display:grid;grid-template-columns:1fr 1fr;gap:28px 48px;margin:0;padding:0;list-style:none;counter-reset:fx}
+.fix li{position:relative;padding-left:40px;font-size:14px;color:var(--soft)}
+.fix li:before{counter-increment:fx;content:counter(fx);position:absolute;left:0;top:-4px;font:400 26px/1 var(--serif);color:var(--pink)}
+.fix b{display:block;color:var(--ink);font-weight:600;font-size:15px;margin-bottom:3px}
+.callout{border-left:3px solid var(--pink);padding:2px 0 2px 18px;margin:0 0 30px;font:400 19px/1.45 var(--serif);max-width:60ch}
+.callout span{color:var(--pink)}
+.week{margin-top:34px;padding-top:20px;border-top:1px dashed var(--line);display:grid;grid-template-columns:1fr 1fr;gap:28px 48px;font-size:14px;color:var(--soft)}
+.week b{display:block;color:var(--ink);margin-bottom:3px}
+@media (max-width:860px){.fix,.week{grid-template-columns:1fr}}
+
+.road svg{width:100%;height:auto;display:block;overflow:visible}
+.road .cap{color:var(--soft);font-size:13px;margin-top:6px;max-width:62ch}
+.stair{margin-top:28px;max-width:220px}
+.stair svg{width:100%;height:auto;overflow:visible}
+.bench .ic{width:44px}
+.bench .ic svg{width:40px;height:auto;display:block}
+.bench .more{all:unset;cursor:pointer;color:var(--blue);font-size:12.5px;margin-top:6px;display:inline-block;border-bottom:1px solid var(--blue-3)}
+.bench .more:focus-visible{outline:2px solid var(--blue)}
+.bench tr.det td{padding:0 10px 0 100px;border-bottom:1px solid var(--line)}
+.bench tr.det[hidden]{display:none}
+.bench .detin{display:grid;grid-template-columns:repeat(3,1fr);gap:18px 28px;padding:4px 0 20px;font-size:13px;color:var(--soft);animation:open .45s cubic-bezier(.2,.7,.2,1)}
+.bench .detin b{display:block;color:var(--ink);font-size:12.5px;margin-bottom:2px}
+.bench tr.top td{border-bottom:0}
+@keyframes open{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.primer{display:grid;grid-template-columns:repeat(3,1fr);gap:20px 36px;margin:0 0 26px;font-size:13.5px;color:var(--soft)}
+.primer b{display:block;color:var(--ink);margin-bottom:2px}
+@media (max-width:860px){.bench .ic,.bench .ld{display:none}.bench td{padding:12px 6px}.bench .sc{font-size:18px}.bench tr.det td{padding-left:10px}.bench .detin,.primer{grid-template-columns:1fr}.stair{max-width:240px}}
+#you{transform:translate(-67.5px,23.4px)}
+.rise.in #you{animation:climb 2.4s .4s cubic-bezier(.3,1.4,.5,1) forwards}
+@keyframes climb{0%{transform:translate(-67.5px,23.4px)}22%{transform:translate(-67.5px,23.4px)}33%{transform:translate(-45px,15.6px)}55%{transform:translate(-45px,15.6px)}66%{transform:translate(-22.5px,7.8px)}88%{transform:translate(-22.5px,7.8px)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){#you,.rise.in #you{animation:none;transform:none}}
+/* motion */
+.rise{opacity:0;transform:translateY(18px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
+.rise.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rise{opacity:1;transform:none;transition:none}html{scroll-behavior:auto}}
+@media (max-width:860px){
+  .hero{grid-template-columns:1fr;padding-top:36px}
+  .sec-h{grid-template-columns:1fr;gap:14px}
+  .grid2,.notes{grid-template-columns:1fr}
+  .src{columns:1}
+  .wrap{padding:0 20px}
+  .bench .ld{white-space:normal}
+}
+#pace{border:0;background:none;padding:0;gap:6px}
+#pace button{border:1px solid var(--line);background:var(--card);color:var(--ink)}
+#pace button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top"><span class="mark">How fucked am I<i>.</i></span><span class="meta">Benchmarks checked 24 Nov 2026</span></header>
+
+<div class="hero">
+  <div>
+    <h1>How much of your week could an AI <em>already</em> do?</h1>
+    <div class="score"><span class="num" id="num">0</span><span class="of" id="of">/ 100</span></div>
+    <p class="verdict" id="verdict">&nbsp;</p>
+    <p class="lede" id="lede">Weighted by how you spend your time, scored by the public benchmarks closest to each task.</p>
+    <div class="scale" aria-hidden="true"><div class="bar"><span></span><span></span><span></span><span></span><span></span></div><div class="pin" id="pin" style="left:0"></div><div class="ticks"><span>0</span><span>20</span><span>40</span><span>60</span><span>80</span><span>100</span></div></div>
+  </div>
+  <div class="scene">
+    <svg id="iso" viewBox="-215 -245 445 415" role="img" aria-label="Isometric blocks, one per task. Height is time spent, pink is the share AI can do."></svg>
+    <div class="legend"><span><b style="background:var(--pink)"></b>AI can do it</span><span><b style="background:var(--blue-2)"></b>Still yours</span><span><b style="background:var(--blue-4);outline:1px dashed var(--blue-2)"></b>Not measured</span></div>
+  </div>
+</div>
+
+<section class="rise">
+  <div class="sec-h">
+    <div><h2>You</h2><p class="k">Pick a grade, then make the week your own.</p></div>
+    <div class="grid2">
+      <div>
+        <div class="ctl">
+          <div class="row"><label for="role">Role in tax technology and transformation</label><span class="val" id="roleval"></span></div>
+          <input type="range" id="role" min="0" max="5" step="1" value="1">
+          <div class="steps" id="rolesteps"></div>
+          <div class="note">Each grade loads a typical PwC tax technology and transformation week, and the sliders below move with it. Juniors build and document; seniors scope, run delivery and advise. Higher grades spend more time on advice, projects and implementation. Nobody benchmarks those yet, so the score falls. That is a gap in the evidence, not a safe harbour.</div>
+        </div>
+        <p class="sub" style="margin-top:26px">Your week</p>
+        <div id="mix"></div>
+      </div>
+      <div>
+        <div class="ctl">
+          <div class="row"><label for="hz">When</label><span class="val" id="hzval"></span></div>
+          <input type="range" id="hz" min="0" max="4" step="1" value="0">
+          <div class="steps" id="hzsteps"></div>
+          <div class="note">Later dates push every measured score up an S-curve towards 100. Unmeasured work stays put, so it sets a ceiling.</div>
+        </div>
+        <div class="ctl">
+          <div class="row"><label>Pace of progress</label><span class="val" id="paceval"></span></div>
+          <div class="seg" id="pace"></div>
+          <div class="note" id="pacenote"></div>
+        </div>
+        <div class="ctl" style="margin-top:26px">
+          <label class="switch"><input type="checkbox" id="alt"><span class="t"></span><span>Treat unmeasured work as exposed as deliverables. The honest pessimist's setting.</span></label>
+        </div>
+        <div class="ctl" style="margin-top:30px">
+          <p class="sub">Today, for comparison</p>
+          <div style="font:400 44px var(--serif);letter-spacing:-.03em" id="today">0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rise">
+  <div class="sec-h">
+    <div><h2>The road ahead</h2><p class="k">Your index at each date under the scenario you picked. The dashed outline is the ceiling: the most your measured work can reach.</p></div>
+    <div class="road" style="max-width:600px">
+      <svg id="road" viewBox="-195 -225 370 350" role="img" aria-label="Isometric towers showing the projected index at each date"></svg>
+      <p class="cap" id="roadcap"></p>
+    </div>
+  </div>
+</section>
+
+<section class="rise">
+  <div class="sec-h">
+    <div><h2>How to become unfucked</h2><p class="k">Move your week towards the work that runs on trust. Nobody benchmarks it because it can't be done from a prompt.</p><div class="stair"><svg id="stair" viewBox="-62 -112 172 186" role="img" aria-label="Isometric staircase from delivering to being trusted"></svg><p style="color:var(--soft);font-size:12.5px;margin:8px 0 0">Deliver <span style="color:var(--pink)">›</span> Explain <span style="color:var(--pink)">›</span> Advise <span style="color:var(--pink)">›</span> <b style="color:var(--ink)">Trusted</b></p></div></div>
+    <div>
+      <p class="callout" id="exposed"></p>
+      <ol class="fix">
+        <li><b>Be in the room where the question is formed.</b>AI answers questions well. It doesn't know which question the CFO is actually worried about. Get to the planning conversation, not just the brief that comes out of it. Ask what the board is nervous about this year.</li>
+        <li><b>Own the relationship, not the deliverable.</b>Be the named person they call first. Check in when there's nothing to bill: a two-line note on a Finance Act change that affects them is worth more than another deck.</li>
+        <li><b>Earn trust on purpose.</b>Trust is built from small promises kept. Reply when you said you would, say "I don't know yet" early, and flag your own mistakes before anyone else finds them. It compounds, and no model can borrow yours.</li>
+        <li><b>Translate, don't transcribe.</b>Anyone can generate the analysis now. The value is saying what it means for their cash, their systems and their audit committee, in their language, in one page.</li>
+        <li><b>Be the person who signs it off.</b>Judgement with your name on it is the scarce part. Get good at catching the plausible-but-wrong answer. On today's benchmarks that is still half the output.</li>
+        <li><b>Run the agents instead of competing with them.</b>Design the workflow, check the output, own the result. In tax technology that's the job title. Every hour the tools save is an hour for points 1 to 4.</li>
+        <li><b>Go where the training data isn't.</b>Irish practice, Revenue relationships, how a client's ERP actually behaves, what was agreed on the last call. Local, unwritten and specific knowledge is the moat.</li>
+        <li><b>Stay close through implementation.</b>Advice that gets implemented builds the next engagement. Be there when the e-invoicing go-live wobbles, not just when the design is signed.</li>
+      </ol>
+      <div class="week">
+        <div><b>This week</b>Book one coffee with a client contact with no agenda. Ask what's keeping them busy that isn't tax.</div>
+        <div><b>This month</b>Hand one routine draft to the tools, then spend the hour you save on a call instead of a second draft.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="rise">
+  <div class="sec-h">
+    <div><h2>What's measured</h2><p class="k">Switch a benchmark off and its task falls back to unmeasured. Several on one task are averaged.</p></div>
+    <div>
+      <div class="primer">
+        <div><b>What a benchmark is</b>A fixed set of tasks with known good answers. Every model sits the same exam, so scores can be compared over time.</div>
+        <div><b>Why agentic ones matter</b>Older tests ask one question and mark one answer. The newer ones give a model tools, files and hours, and mark the finished work. That is much closer to a real engagement.</div>
+        <div><b>How to read the cubes</b>Each cube fills pink to the top score. Elo benchmarks stay blue: they rank models against each other and have no 100% to fill to.</div>
+      </div>
+      <table class="bench" id="bench"></table>
+    </div>
+  </div>
+</section>
+
+<section class="rise">
+  <div class="sec-h">
+    <div><h2>Before you quote it</h2></div>
+    <ul class="notes">
+      <li><b>Everything here is American.</b>No benchmark tests Irish corporation tax, VAT or Revenue practice. That buffer thins every time a model sees more local material.</li>
+      <li><b>Zero means unmeasured, not safe.</b>Advice, projects, implementation and tool-building score nothing only because nobody tests them.</li>
+      <li><b>Models, not products.</b>A model inside a good workflow beats a bare prompt, so deployed tools can do better than these numbers.</li>
+      <li><b>The future is a what-if.</b>Only the trend-holds rate is measured; the other scenarios are scaled from it. Whichever you pick is applied to every benchmark at once.</li>
+      <li><b>Elo is relative.</b>AA-Briefcase and GDPval-AA only rank models against each other, so they inform but never score.</li>
+      <li><b>The role mixes are guesses.</b>Estimated for a tax technology and transformation team, not taken from timesheets. Set the sliders to your real week.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="rise">
+  <div class="sec-h">
+    <div><h2>Sources</h2></div>
+    <ul class="src" id="src"></ul>
+  </div>
+</section>
+
+<footer>A side project for curiosity, not advice. Update the figures in the data block at the top of the script when the leaderboards move.</footer>
+</div>
+
+<script>
+/* ===== Data: update by hand ===== */
+const BUCKETS=[
+ {id:'advice',name:'Consulting and client advice',short:'Advice'},
+ {id:'research',name:'Tax technical research',short:'Research'},
+ {id:'projects',name:'Managing projects',short:'Projects'},
+ {id:'deliverables',name:'Creating deliverables',short:'Decks'},
+ {id:'implementation',name:'Advising on implementation',short:'Rollout'},
+ {id:'compliance',name:'Compliance and calculations',short:'Compliance'},
+ {id:'tools',name:'Building tools and automation',short:'Tools'}];
+/* Presets: a tax technology and transformation team at PwC. Order: advice, research, projects, deliverables, implementation, compliance, tools. Estimates, not timesheet data. */
+const ROLES=[['Associate',[5,10,10,30,10,10,25]],['Senior associate',[10,10,15,25,15,5,20]],['Manager',[15,5,25,20,25,0,10]],['Senior manager',[25,5,25,15,25,0,5]],['Director',[35,5,20,10,25,0,5]],['Partner',[50,0,15,5,25,0,5]]];
+const BENCH={
+ tax_agent:{how:`Agents get research tools and work through a private set of 193 research-grade US corporate tax questions. Answers are graded for accuracy against expert solutions. The top three are tightly bunched: 54.89%, 52.30% and 51.78%.`,why:`The closest match to tax technical research: open-ended questions, real research, no multiple choice.`,lim:`US federal corporate tax only. The questions are private, so you can't inspect them.`,n:'Vals Tax Agent Bench',w:'Agents on research-grade US corporate tax questions.',s:54.89,lead:'Gemini 4 Neon',d:'19 Nov 2026',u:'https://www.vals.ai/benchmarks/tax_agent_bench',feeds:'research',on:true},
+ taxcalc:{how:`Models get a taxpayer's documents and must produce the completed return. The 2025 edition uses 50 cases with realistic PDF inputs (W-2s, 1099s) and includes state returns. Strict scoring means every line exact; lenient allows ±$5.`,why:`The cleanest test of rules-based compliance work. The best strict score went from 32.35% on the simpler 2024 edition to 86.00% on the harder 2025 one.`,lim:`US individual returns, not corporation tax, VAT or payroll. A return with one wrong line counts as wrong.`,n:'TaxCalcBench',w:'Full US returns, every line exact. 2025 edition.',s:86.00,lead:'Claude Fable 5.2',d:'1 Oct 2026',u:'https://taxcalcbench.ai/',feeds:'compliance',on:true},
+ rli:{how:`Real projects bought on freelance platforms: game development, design, architecture, data analysis, video. Over 6,000 hours of work worth more than $140,000, some jobs costing $10,000+ and taking 100+ hours. An AI deliverable counts only if it would be accepted as the professional's work.`,why:`The best measure of end-to-end delivery: brief in, finished work out, judged like a client would.`,lim:`Not tax work. The ~3.3-month doubling pace is measured over a short window.`,n:'Remote Labor Index',w:'Real paid freelance projects, fully automated.',s:41.25,lead:'Fable 5.2',d:'24 Nov 2026',u:'https://www.remotelabor.ai/',feeds:'deliverables',on:true},
+ lrb:{how:`413 open-ended US legal research questions written by experts, each with a gold answer and a pass/fail rubric. A response counts only if every criterion passes and every cited authority checks out. Thirteen frontier models tested.`,why:`The strictest test of researched advice that has to stand up. More tool calls and spend did not predict better accuracy.`,lim:`US law, not tax. A paper, not a live leaderboard.`,n:'Legal Research Bench',w:'US research where every cited authority must check out.',s:42.9,lead:'Claude Opus 4.8',d:'Paper',u:'https://arxiv.org/html/2610.00609',feeds:'research',on:false},
+ legal_index:{how:`Legal research and drafting tasks across practice areas, weighted by each area's share of US law-firm revenue.`,why:`A commercial view: how much of what US law firms bill for a model can do.`,lim:`US legal work. I read this score from a search listing, not the live page.`,n:'Vals Legal Index',w:'US legal research and drafting, revenue-weighted.',s:77.86,lead:'Wonder Full',d:'5 Nov 2026',u:'https://www.vals.ai/benchmarks/legal_index',feeds:'research',on:false},
+ legalbench:{how:`A large open set of short legal reasoning tasks built by academics: issue spotting, rule application, interpretation.`,why:`Useful history. It shows how fast models got good at short-form legal reasoning.`,lim:`Saturated. The top models are bunched within a fraction of a point, so it no longer separates them.`,n:'LegalBench',w:'Academic legal reasoning. Saturated.',s:88.56,lead:'Claude Fable 5',d:'13 Oct 2026',u:'https://vals.ai/benchmarks/legal_bench',feeds:'research',on:false},
+ taxeval:{how:`Vals' set of tax questions with expert answers, scored for accuracy.`,why:`Shows that question-and-answer tax tests have run their course.`,lim:`Archived after scores plateaued around 80%, so it is no longer run on new models.`,n:'Vals TaxEval',w:'Tax Q&A. Archived once scores plateaued.',s:80.38,lead:'Muse Spark 1.2',d:'1 Sep 2026',u:'https://www.vals.ai/benchmarks/tax_eval_v2',feeds:'research',on:false},
+ briefcase:{how:`Four multi-week business projects with thousands of input files and 91 linked tasks. Deliverables are spreadsheets, decks and memos. Graded on a rubric of checks plus head-to-head comparisons of analysis and presentation.`,why:`The closest thing to a real engagement workload: messy files, linked tasks, polished output.`,lim:`Elo only ranks models against each other, so it can't feed a 0 to 100 index.`,n:'AA-Briefcase',w:'Multi-week business projects. Elo, context only.',s:1815,elo:true,lead:'Claude Sonnet 5.5',d:'24 Nov 2026',u:'https://artificialanalysis.ai/evaluations/aa-briefcase'},
+ gdpval:{how:`220 tasks written by professionals with an average of 14 years' experience, across 44 occupations in 9 industries. Models get a shell and a browser. Experts compare outputs blind, head to head.`,why:`A broad check on professional deliverables, including legal and finance work.`,lim:`Elo anchored to one model at 1600. Artificial Analysis now lists it as legacy.`,n:'GDPval-AA',w:'Expert tasks across 44 occupations. Elo, context only.',s:1866,elo:true,lead:'Claude Opus 5.5',d:'24 Nov 2026',u:'https://artificialanalysis.ai/evaluations/gdpval-aa'}};
+const HORIZONS=[['Today',0],['Summer 2027',7.2],['Jan 2028',13.25],['2030',37.25],['2040',157.25]];
+/* Scenarios: months for automation to double while it is still low. The trend-holds rate is the measured Remote Labor Index pace; the others are what-ifs. */
+const SCEN=[
+ ['Takeoff',1.65,'Recursive self-improvement is cracked: AI starts speeding up AI research and progress compounds. Automation doubles every ~7 weeks, twice the current trend. The sci-fi case, but not one serious labs rule out.'],
+ ['Trend holds',3.3,'Today\'s measured pace carries on. The Remote Labor Index has been doubling about every 3.3 months. Optimistic, because short-window trends rarely last, but it is the only rate here that is actually measured.'],
+ ['Cools off',6.6,'Hype fades, compute and energy get expensive, and gains come in steps rather than a curve. Half the current pace.'],
+ ['Regulated',13.2,'The EU AI Act, professional-body rules, Revenue and clients insist on a human signing everything. The technology keeps improving, but adoption crawls. A quarter of the current pace.'],
+ ['AI winter',26.4,'Models plateau, scaling stops paying off and the money moves on. Progress still happens, slowly. An eighth of the current pace.']];
+const PACES=SCEN.map(x=>x[1]);
+const BANDS=[[0,'Grand, go back to sleep.'],[20,'A bit fucked. Learn the tools.'],[40,'Moderately fucked. Change what you spend your time on.'],[60,'Properly fucked, unless you are the one running the agents.'],[80,'Comprehensively fucked. A firehose of shit is heading your way.']];
+const SOURCES=[['Vals AI, Tax Agent Bench','https://www.vals.ai/benchmarks/tax_agent_bench'],['Column Tax, TaxCalcBench','https://taxcalcbench.ai/'],['TaxCalcBench code and results','https://github.com/column-tax/tax-calc-bench'],['Remote Labor Index (CAIS and Scale AI)','https://www.remotelabor.ai/'],['Remote Labor Index paper','https://arxiv.org/abs/2510.26787'],['Legal Research Bench paper','https://arxiv.org/html/2610.00609'],['Artificial Analysis, AA-Briefcase','https://artificialanalysis.ai/evaluations/aa-briefcase'],['Artificial Analysis, GDPval-AA','https://artificialanalysis.ai/evaluations/gdpval-aa'],['OpenAI, GDPval paper','https://proceedings.iclr.cc/paper_files/paper/2026/file/290c2430f91912204f30bbcc990fff1d-Paper-Conference.pdf'],['Vals AI, Legal Index','https://www.vals.ai/benchmarks/legal_index'],['Vals AI, LegalBench','https://vals.ai/benchmarks/legal_bench'],['Vals AI, VLAIR legal research study','https://www.vals.ai/industry-reports/vlair-10-14-25']];
+/* ===== End data ===== */
+
+const $=s=>document.querySelector(s);
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const st={role:1,w:ROLES[1][1].slice(),hz:0,pace:1,alt:false};
+const f1=v=>v.toFixed(1);
+
+function bucketScore(id){const ks=Object.keys(BENCH).filter(k=>BENCH[k].feeds===id&&BENCH[k].on);return ks.length?ks.reduce((a,k)=>a+BENCH[k].s,0)/ks.length:null;}
+function project(s,m){if(m<=0||s<=0)return s;if(s>=100)return 100;const o=s/(100-s)*Math.exp(Math.LN2/PACES[st.pace]*m);return 100*o/(1+o);}
+function base(i){const s=bucketScore(BUCKETS[i].id);if(s!==null)return s;if(st.alt){const d=bucketScore('deliverables');return d===null?0:d;}return 0;}
+function indexAt(m){const sum=st.w.reduce((a,b)=>a+b,0)||1;let t=0,cap=0;BUCKETS.forEach((b,i)=>{const w=st.w[i]/sum,s0=base(i);t+=w*project(s0,m);if(bucketScore(b.id)!==null||(st.alt&&bucketScore('deliverables')!==null))cap+=w*100;});return{t,cap};}
+function compute(){const sum=st.w.reduce((a,b)=>a+b,0)||1;const m=HORIZONS[st.hz][1];let tot=0,today=0;const rows=BUCKETS.map((b,i)=>{const s0=base(i),s=project(s0,m),w=st.w[i]/sum;tot+=w*s;today+=w*s0;return{b,i,s,w,measured:bucketScore(b.id)!==null,borrowed:bucketScore(b.id)===null&&st.alt&&bucketScore('deliverables')!==null};});return{rows,tot,today};}
+
+/* ---- spring helper ---- */
+function spring(obj,key,target,k=170,c=22){obj._t=obj._t||{};obj._t[key]=target;if(RM){obj[key]=target;return;}obj._v=obj._v||{};if(obj._v[key]===undefined)obj._v[key]=0;}
+const anim={num:0,pin:0,cols:BUCKETS.map(()=>({h:0,p:0}))};
+let running=false;
+anim.road=HORIZONS.map(()=>({h:0}));anim.cap=0;
+function tick(){
+  running=true;let moving=false;
+  const step=(o,key,k=150,c=20)=>{const t=o._t&&o._t[key];if(t===undefined)return;o._v=o._v||{};const v=o._v[key]||0;const x=o[key];const a=-k*(x-t)-c*v;const nv=v+a/60;o._v[key]=nv;o[key]=x+nv/60;if(Math.abs(o[key]-t)>0.01||Math.abs(nv)>0.01)moving=true;else{o[key]=t;o._v[key]=0;}};
+  step(anim,'num',120,24);step(anim,'pin',140,18);
+  anim.cols.forEach(cl=>{step(cl,'h',160,16);step(cl,'p',160,18);});anim.road.forEach(o=>step(o,'h',140,17));step(anim,'cap',140,20);
+  draw();
+  if(moving)requestAnimationFrame(tick);else running=false;
+}
+function kick(){if(RM){draw();return;}if(!running)requestAnimationFrame(tick);}
+
+/* ---- isometric scene ---- */
+const S=34,C=Math.cos(Math.PI/6),Sn=0.5;
+const P=(x,y,z)=>[((x-y)*C*S).toFixed(1),((x+y)*Sn*S-z*S).toFixed(1)].join(',');
+function box(x,y,z0,z1,w,d,top,left,right,extra=''){
+  if(z1-z0<0.002)return '';
+  return `<polygon points="${P(x,y+d,z0)} ${P(x+w,y+d,z0)} ${P(x+w,y+d,z1)} ${P(x,y+d,z1)}" fill="${left}" ${extra}/>`+
+         `<polygon points="${P(x+w,y,z0)} ${P(x+w,y+d,z0)} ${P(x+w,y+d,z1)} ${P(x+w,y,z1)}" fill="${right}" ${extra}/>`+
+         `<polygon points="${P(x,y,z1)} ${P(x+w,y,z1)} ${P(x+w,y+d,z1)} ${P(x,y+d,z1)}" fill="${top}" ${extra}/>`;
+}
+function isoKit(Sx){const P2=(x,y,z)=>((x-y)*C*Sx).toFixed(1)+','+((x+y)*Sn*Sx-z*Sx).toFixed(1);
+  return {P:P2,box:(x,y,z0,z1,w,d,t,l,rr,ex='')=>z1-z0<0.002?'':`<polygon points="${P2(x,y+d,z0)} ${P2(x+w,y+d,z0)} ${P2(x+w,y+d,z1)} ${P2(x,y+d,z1)}" fill="${l}" ${ex}/><polygon points="${P2(x+w,y,z0)} ${P2(x+w,y+d,z0)} ${P2(x+w,y+d,z1)} ${P2(x+w,y,z1)}" fill="${rr}" ${ex}/><polygon points="${P2(x,y,z1)} ${P2(x+w,y,z1)} ${P2(x+w,y+d,z1)} ${P2(x,y+d,z1)}" fill="${t}" ${ex}/>`};}
+const PAL={pink:['#FFB3CE','#FF5D98','#E23F7E'],blue:['#B8C5FF','#6F86FF','#4A63E8'],none:['#F3F5FF','#E2E7FB','#D1D9F6']};
+const GAP=1.55, ORIGIN=-4.4;
+let scene={rows:[]};
+const RK=isoKit(30);
+function drawRoad(){
+  const k=RK;let g='',lab='';const n=HORIZONS.length,gap=2.1,o=-4.6,Hm=5.2;
+  g+=k.box(o-0.8,-0.8,-0.3,0,n*gap+0.6,2.6,'#FBFAF7','#ECE7DF','#E0D9CE');
+  // path tiles connecting towers
+  for(let i=0;i<n-1;i++) g+=k.box(o+i*gap+1.0,0.35,0,0.04,gap-1.0,0.3,'#E9E3D8','#DDD5C8','#D3CABB');
+  HORIZONS.forEach((h,i)=>{
+    const x=o+i*gap,v=Math.max(0,anim.road[i].h),z=v/100*Hm,cz=Math.max(0,anim.cap)/100*Hm,sel=i===st.hz;
+    const pk=sel?PAL.pink:['#FFD3E3','#FF9EC2','#F483AE'];
+    g+=k.box(x,0,0,z,1,1,pk[0],pk[1],pk[2]);
+    if(cz-z>0.03) g+=k.box(x,0,z,cz,1,1,'rgba(255,255,255,0.35)','rgba(255,255,255,0.15)','rgba(255,255,255,0.1)','stroke="#9FB0F0" stroke-width="0.8" stroke-dasharray="3 3"');
+    const [lx,ly]=k.P(x+0.5,0.5,Math.max(z,cz)).split(',').map(Number);
+    lab+=`<text x="${lx}" y="${ly-28}" text-anchor="middle" font-size="11" font-family="Avenir Next,Segoe UI,Arial,sans-serif" fill="${sel?'#16213F':'#5B6482'}" font-weight="${sel?600:400}" paint-order="stroke" stroke="#F6F3EE" stroke-width="4">${h[0]}</text>`;
+    lab+=`<text x="${lx}" y="${ly-11}" text-anchor="middle" font-size="${sel?19:16}" font-family="Iowan Old Style,Palatino,Georgia,serif" fill="${sel?'#FF5D98':'#16213F'}" paint-order="stroke" stroke="#F6F3EE" stroke-width="4">${f1(v)}</text>`;
+  });
+  $('#road').innerHTML=g+lab;
+}
+function drawStair(){
+  const k=isoKit(26);let g='';const steps=['Deliver','Explain','Advise','Trusted'];
+  const tones=[['#E6EBFF','#C9D3FF','#AFBDF8'],['#C9D3FF','#9DB0FF','#8399F2'],['#9DB0FF','#6F86FF','#5A72EE'],['#6F86FF','#3453F5','#2A45D6']];
+  let lab='';
+  steps.forEach((t,i)=>{g+=k.box(-1.2+i*1,-0.6,0,0.8+i*0.8,1,1.8,tones[i][0],tones[i][1],tones[i][2]);
+    const [lx,ly]=k.P(-1.2+i*1+0.5,0.3,0.8+i*0.8).split(',').map(Number);
+    lab+=`<text x="${lx}" y="${ly+4}" text-anchor="middle" font-size="10" font-weight="600" font-family="Avenir Next,Segoe UI,Arial,sans-serif" fill="${i>1?'#fff':'#16213F'}">${t}</text>`;});
+  // you: a small pink cube climbing
+  g+=`<g id="you">${k.box(-1.2+3*1+0.3,-0.2,3.2,3.6,0.4,0.4,'#FFB3CE','#FF5D98','#E23F7E')}</g>`;
+  $('#stair').innerHTML=g;
+}
+function draw(){
+  const r=scene.rows;let svg='',lab='';
+  // ground slab
+  svg+=box(ORIGIN-0.7,-0.9,-0.35,0,BUCKETS.length*GAP+1.0,2.8,'#FBFAF7','#ECE7DF','#E0D9CE');
+  // soft floor grid
+  for(let i=0;i<=BUCKETS.length;i++){const x=ORIGIN-0.2+i*GAP;svg+=`<line x1="${P(x,-0.9,0).split(',')[0]}" y1="${P(x,-0.9,0).split(',')[1]}" x2="${P(x,1.9,0).split(',')[0]}" y2="${P(x,1.9,0).split(',')[1]}" stroke="#EAE4DA" stroke-width="1"/>`;}
+  r.forEach((row,i)=>{
+    const cl=anim.cols[i],x=ORIGIN+i*GAP,y=0,w=1,d=1;
+    const H=Math.max(0,cl.h),hp=Math.max(0,Math.min(H,cl.p));
+    if(!row.measured&&!row.borrowed){
+      svg+=box(x,y,0,H,w,d,PAL.none[0],PAL.none[1],PAL.none[2],'stroke="#9FB0F0" stroke-width="0.8" stroke-dasharray="3 3"');
+    }else{
+      svg+=box(x,y,0,hp,w,d,PAL.pink[0],PAL.pink[1],PAL.pink[2]);
+      svg+=box(x,y,hp,H,w,d,PAL.blue[0],PAL.blue[1],PAL.blue[2]);
+      if(hp>0.01&&H-hp>0.01){ /* seam */ svg+=`<polyline points="${P(x,y+d,hp)} ${P(x+w,y+d,hp)} ${P(x+w,y,hp)}" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="1"/>`; }
+    }
+    const [lx,ly]=P(x+0.5,y+0.5,H).split(',').map(Number);
+    const val=row.measured||row.borrowed?Math.round(row.s):'';
+    lab+=`<text x="${lx}" y="${ly-(val===''?14:30)}" paint-order="stroke" stroke="#F6F3EE" stroke-width="4" text-anchor="middle" font-family="Avenir Next,Segoe UI,Arial,sans-serif" font-size="10.5" fill="#5B6482">${row.b.short}</text>`;
+    if(val!=='') lab+=`<text x="${lx}" y="${ly-13}" paint-order="stroke" stroke="#F6F3EE" stroke-width="4" text-anchor="middle" font-family="Iowan Old Style,Palatino,Georgia,serif" font-size="17" fill="#16213F">${val}</text>`;
+
+  });
+  $('#iso').innerHTML=svg+lab;
+  drawRoad();
+  $('#num').textContent=f1(Math.max(0,anim.num));
+  $('#pin').style.left=Math.max(0,Math.min(100,anim.pin))+'%';
+}
+
+/* ---- render controls ---- */
+function setFill(el){const p=(el.value-el.min)/(el.max-el.min)*100;el.style.setProperty('--p',p+'%');}
+function render(){
+  const R=compute();
+  scene.rows=R.rows;
+  const sum=st.w.reduce((a,b)=>a+b,0)||1;
+  R.rows.forEach((row,i)=>{const H=(st.w[i]/sum)*10;spring(anim.cols[i],'h',H);spring(anim.cols[i],'p',H*row.s/100);});
+  spring(anim,'num',R.tot);spring(anim,'pin',R.tot);
+  const band=[...BANDS].reverse().find(b=>R.tot>=b[0]);
+  const v=$('#verdict');if(v.textContent!==band[1]){v.textContent=band[1];}
+  document.querySelectorAll('.scale .bar span').forEach((s,i)=>s.classList.toggle('on',BANDS[i]===band));
+  const later=st.hz>0;
+  $('#of').textContent=later?`/ 100 by ${HORIZONS[st.hz][0]}`:'/ 100';
+  $('#lede').textContent=later?`Projected for ${HORIZONS[st.hz][0]} in the ${SCEN[st.pace][0].toLowerCase()} scenario. A what-if, not a forecast.`:'Weighted by how you spend your time, scored by the public benchmarks closest to each task.';
+  $('#today').textContent=f1(R.today);
+  $('#roleval').textContent=ROLES[st.role][0]+(ROLES[st.role][1].every((x,i)=>x===st.w[i])?'':', adjusted');
+  $('#hzval').textContent=HORIZONS[st.hz][0];
+  $('#paceval').textContent=SCEN[st.pace][0];
+  $('#pacenote').textContent=SCEN[st.pace][2]+(st.hz?'':' Pick a later date to see the effect.');
+  document.querySelectorAll('#rolesteps span').forEach((s,i)=>s.classList.toggle('on',i===st.role));
+  document.querySelectorAll('#hzsteps span').forEach((s,i)=>s.classList.toggle('on',i===st.hz));
+  const when=later?` by ${HORIZONS[st.hz][0]}`:' today';
+  R.rows.forEach((row,i)=>{
+    $('#v-'+row.b.id).textContent=Math.round(row.w*100)+'%';
+    const n=$('#n-'+row.b.id);n.classList.remove('up','down');
+    let t;
+    if(!row.measured&&!row.borrowed){t='Not measured, so it counts as zero. More time here lowers the score on paper only.';}
+    else{
+      const src=row.measured?Object.keys(BENCH).filter(k=>BENCH[k].feeds===row.b.id&&BENCH[k].on).map(k=>BENCH[k].n).join(' + '):'borrowed from deliverables';
+      const diff=row.s-R.tot;
+      t=`AI scores ${f1(row.s)}${when} (${src}). `;
+      if(Math.abs(diff)<0.5)t+='Level with your score, so this barely moves it.';
+      else if(diff>0){t+='Above your score: more time here, more fucked.';n.classList.add('up');}
+      else{t+='Below your score: more time here, less fucked.';n.classList.add('down');}
+    }
+    n.textContent=t;
+  });
+  document.querySelectorAll('#bench tr[data-k]').forEach(tr=>tr.classList.toggle('off',!BENCH[tr.dataset.k].on));
+  HORIZONS.forEach((h,i)=>spring(anim.road[i],'h',indexAt(h[1]).t));
+  const cap=indexAt(0).cap;spring(anim,'cap',cap);
+  $('#roadcap').textContent=`In the ${SCEN[st.pace][0].toLowerCase()} scenario you go from ${f1(indexAt(0).t)} today to ${f1(indexAt(HORIZONS[4][1]).t)} by 2040. The ceiling is ${f1(cap)}: the share of your week that has a benchmark behind it.`+(st.alt?' Unmeasured work is counted, so the ceiling is 100.':' Switch on the pessimist setting to remove it.');
+  /* most exposed slice */
+  const exp=R.rows.filter(x=>(x.measured||x.borrowed)&&x.w>0).sort((a,b)=>b.w*b.s-a.w*a.s)[0];
+  const safe=R.rows.filter(x=>!x.measured&&!x.borrowed);
+  $('#exposed').innerHTML=exp?`Your most exposed slice is <span>${exp.b.name.toLowerCase()}</span>: ${Math.round(exp.w*100)}% of your week, with AI at ${f1(exp.s)}${later?' by '+HORIZONS[st.hz][0]:''}. Start moving hours out of it and into ${safe.length?'advice, relationships and implementation':'the work only you can do'}.`:'Nothing in your week is measured yet. Enjoy it while it lasts.';
+  kick();
+}
+
+function build(){
+  $('#rolesteps').innerHTML=ROLES.map((r,i)=>`<span data-i="${i}">${r[0].replace('Senior ','Sr ')}</span>`).join('');
+  $('#hzsteps').innerHTML=HORIZONS.map((h,i)=>`<span data-i="${i}">${h[0]}</span>`).join('');
+  $('#mix').innerHTML=BUCKETS.map((b,i)=>`<div class="ctl"><div class="row"><label for="w-${b.id}">${b.name}</label><span class="val" id="v-${b.id}"></span></div><input type="range" id="w-${b.id}" min="0" max="60" value="${st.w[i]}" aria-describedby="n-${b.id}"><div class="note" id="n-${b.id}"></div></div>`).join('');
+  BUCKETS.forEach((b,i)=>{const el=$('#w-'+b.id);setFill(el);el.addEventListener('input',()=>{st.w[i]=+el.value;setFill(el);render();});});
+  const role=$('#role');setFill(role);
+  const setRole=i=>{st.role=i;role.value=i;setFill(role);st.w=ROLES[i][1].slice();BUCKETS.forEach((b,k)=>{const el=$('#w-'+b.id);el.value=st.w[k];setFill(el);});render();};
+  role.addEventListener('input',()=>setRole(+role.value));
+  $('#rolesteps').addEventListener('click',e=>{if(e.target.dataset.i)setRole(+e.target.dataset.i);});
+  const hz=$('#hz');setFill(hz);
+  const setHz=i=>{st.hz=i;hz.value=i;setFill(hz);render();};
+  hz.addEventListener('input',()=>setHz(+hz.value));
+  $('#hzsteps').addEventListener('click',e=>{if(e.target.dataset.i)setHz(+e.target.dataset.i);});
+  $('#pace').innerHTML=SCEN.map((x,i)=>`<button aria-pressed="${i===st.pace}" data-v="${i}">${x[0]}</button>`).join('');
+  $('#pace').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;st.pace=+b.dataset.v;document.querySelectorAll('#pace button').forEach(x=>x.setAttribute('aria-pressed',x===b));render();});
+  $('#alt').addEventListener('change',e=>{st.alt=e.target.checked;render();});
+  const feedName=id=>BUCKETS.find(b=>b.id===id).name.toLowerCase();
+  const mini=(b)=>{const k=isoKit(13);const f=b.elo?0:b.s/100;let g=k.box(0,0,0,2.2,1.4,1.4,'#F3F5FF','#E2E7FB','#D1D9F6','stroke="#C9D3FF" stroke-width="0.6"');
+    if(!b.elo) g+=k.box(0,0,0,2.2*f,1.4,1.4,'#FFB3CE','#FF5D98','#E23F7E'); else g+=k.box(0,0,0,2.2,1.4,1.4,'#B8C5FF','#6F86FF','#4A63E8');
+    return `<svg viewBox="-22 -32 44 50" aria-hidden="true">${g}</svg>`;};
+  $('#bench').innerHTML=Object.entries(BENCH).map(([k,b])=>`<tr ${b.elo?'':`data-k="${k}"`} class="${b.elo?'ctx':''}"><td style="width:46px">${b.elo?'':`<label class="switch"><input type="checkbox" data-b="${k}" ${b.on?'checked':''} aria-label="Use ${b.n}"><span class="t"></span></label>`}</td><td class="ic">${mini(b)}</td><td><div class="nm">${b.n}</div><div class="what">${b.w}</div><div class="feeds">${b.elo?'Context only':'Feeds '+feedName(b.feeds)}</div><button class="more" data-d="${k}" aria-expanded="false">How it works</button></td><td class="ld">${b.lead}<br><a href="${b.u}" target="_blank" rel="noopener">${b.d}</a></td><td class="sc">${b.elo?b.s+'<span style="font-size:13px"> Elo</span>':b.s.toFixed(2)+'%'}</td></tr><tr class="det" id="d-${k}" hidden><td colspan="5"><div class="detin"><div><b>What it tests</b>${b.how}</div><div><b>Why it's here</b>${b.why}</div><div><b>Watch out for</b>${b.lim}</div></div></td></tr>`).join('');
+  document.querySelectorAll('#bench .more').forEach(btn=>btn.addEventListener('click',()=>{const d=$('#d-'+btn.dataset.d);const open=d.hidden;d.hidden=!open;btn.setAttribute('aria-expanded',open);btn.textContent=open?'Hide':'How it works';btn.closest('tr').classList.toggle('top',open);}));
+  document.querySelectorAll('#bench input[data-b]').forEach(cb=>cb.addEventListener('change',()=>{BENCH[cb.dataset.b].on=cb.checked;render();}));
+  $('#src').innerHTML=SOURCES.map(s=>`<li><a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a></li>`).join('');
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.12});
+  document.querySelectorAll('.rise').forEach(el=>io.observe(el));
+}
+build();drawStair();
+// entrance: towers grow from the floor, staggered
+if(!RM){anim.cols.forEach(c=>{c.h=0;c.p=0;});}
+render();
+if(!RM){const R=compute();const sum=st.w.reduce((a,b)=>a+b,0);anim.cols.forEach((c,i)=>{c._t.h=0;c._t.p=0;setTimeout(()=>{c._t.h=(st.w[i]/sum)*10;c._t.p=c._t.h*R.rows[i].s/100;kick();},250+i*90);});}
+</script>
+</body>
+</html>
